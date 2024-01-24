@@ -1,9 +1,6 @@
 # My Own Shell
 
 This project main goal is to implement a simple shell in C/CPP ( we decided in C) language which includes some of the basic shell commands and more:
-<ul>
-  <li></li>
-</ul>
 
 - ***cd*** - change the current working directory, after the "cd" you can specify the other directory.
 
@@ -29,7 +26,7 @@ For Example :
   `fi` - must be at the end
 
 For Example :   
-> if date | grep 14  
+> if date | grep 13  
 > then   
 >   echo "Good afternoon"   
 > else     
