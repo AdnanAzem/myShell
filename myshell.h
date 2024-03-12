@@ -10,12 +10,14 @@
 #include <signal.h>
 #include "unistd.h"
 #include <fcntl.h>
+#include <stdbool.h>
 
 
 #define MAX_ARGS 100
 #define capacity 1024
 
-
+bool last_command_exists = false;
+char command_history[capacity] = "";
 char previousCommandBuffer[capacity]; // Buffer to store the previous command
 char temporaryCommandBuffer[capacity]; // Temporary buffer to store a command 
 char cmd[capacity]; // Buffer to store the current command

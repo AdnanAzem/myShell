@@ -310,13 +310,6 @@ int execute(char **args){
     if (args[0] == NULL)
         return 0;
 
-    if (!strcmp(args[0], "!!")){ // Repeat the previous command
-        strcpy(temporaryCommandBuffer, previousCommandBuffer);
-        tokenizeCommand(temporaryCommandBuffer);
-        execute(argv);
-        return 0;
-    }
-
     // Variable assignment
     if (args[0][0] == '$' && i >= 3){
         Var *var = (Var *)malloc(sizeof(Var));
@@ -490,20 +483,34 @@ int main()
      
         if (!strcmp(cmd, "quit"))
             break;
-      
-        if (strcmp(cmd, "!!"))
-            strcpy(previousCommandBuffer, cmd);
+
+        if (strcmp(cmd, "!!") == 0) {
+            if (!last_command_exists) {
+                printf("No previous command\n");
+                continue;
+            }
+            printf("%s\n", command_history);
+            system(command_history);
+            continue;
+        }
+        // Save command to history
+        strcpy(command_history, cmd);
+        last_command_exists = true;         
 
         if (cmd[0] == 'i' && cmd[1] == 'f'){
             // take all the command ecxept the first argument
             strcpy(cmd, temporaryCommandBuffer + 2);
             char then[1024];
+            printf("> ");
             fgets(then, 1024, stdin);
             if (then[0] == 't' && then[1] == 'h' && then[2] == 'e' && then[3] == 'n'){
                 char ThenCommand[1024];
+                printf("> ");
                 fgets(ThenCommand, 1024, stdin);
                 char NextCommand[1024];
+                printf("> ");
                 fgets(NextCommand, 1024, stdin);
+                
                 if (NextCommand[0] == 'f' && NextCommand[1] == 'i'){
                     if (!system(cmd)){ // check if if statement is true, and execute the command
                         strcpy(cmd, " ");
@@ -517,8 +524,10 @@ int main()
                 // check if there is an else statement
                 else if (NextCommand[0] == 'e' && NextCommand[1] == 'l' && NextCommand[2] == 's' && NextCommand[3] == 'e'){
                     char elseCommand[1024];
+                    printf("> ");
                     fgets(elseCommand, 1024, stdin);
                     char fi[1024];
+                    printf("> ");
                     fgets(fi, 1024, stdin);
                     if (fi[0] == 'f' && fi[1] == 'i'){ // check if if statement is true, and execute the command
                         if (!system(cmd)){
